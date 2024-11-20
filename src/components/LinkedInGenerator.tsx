@@ -10,6 +10,13 @@ import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
 import { LinkedinIcon, CopyIcon, Share2Icon, X } from "lucide-react";
+import {
+  FaLinkedin,
+  FaTwitter,
+  FaFacebook,
+  FaWhatsapp,
+  FaEnvelope,
+} from "react-icons/fa";
 import { categories, postStyles } from "../assets/content";
 
 // Helper function to get random element from an array
@@ -58,32 +65,37 @@ const ShareModal: React.FC<{
         <div className="grid gap-3">
           <Button
             onClick={() => shareToWeb("linkedin")}
-            className="bg-blue-600 text-white w-full py-2 rounded-md text-sm"
+            className="bg-blue-600 text-white w-full py-2 rounded-md text-sm flex items-center gap-2"
           >
+            <FaLinkedin className="w-5 h-5" />
             Share to LinkedIn
           </Button>
           <Button
             onClick={() => shareToWeb("twitter")}
-            className="bg-blue-400 text-white w-full py-2 rounded-md text-sm"
+            className="bg-blue-400 text-white w-full py-2 rounded-md text-sm flex items-center gap-2"
           >
+            <FaTwitter className="w-5 h-5" />
             Share to Twitter
           </Button>
           <Button
             onClick={() => shareToWeb("facebook")}
-            className="bg-blue-700 text-white w-full py-2 rounded-md text-sm"
+            className="bg-blue-700 text-white w-full py-2 rounded-md text-sm flex items-center gap-2"
           >
+            <FaFacebook className="w-5 h-5" />
             Share to Facebook
           </Button>
           <Button
             onClick={() => shareToWeb("whatsapp")}
-            className="bg-green-500 text-white w-full py-2 rounded-md text-sm"
+            className="bg-green-500 text-white w-full py-2 rounded-md text-sm flex items-center gap-2"
           >
+            <FaWhatsapp className="w-5 h-5" />
             Share to WhatsApp
           </Button>
           <Button
             onClick={() => shareToWeb("email")}
-            className="bg-gray-600 text-white w-full py-2 rounded-md text-sm"
+            className="bg-gray-600 text-white w-full py-2 rounded-md text-sm flex items-center gap-2"
           >
+            <FaEnvelope className="w-5 h-5" />
             Share via Email
           </Button>
         </div>
