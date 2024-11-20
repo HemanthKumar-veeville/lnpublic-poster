@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -52,7 +52,7 @@ const ShareModal: React.FC<{
             <X className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-gray-400 mb-4">
           Share this post via your favorite platform:
         </p>
         <div className="grid gap-3">
@@ -118,6 +118,11 @@ const LinkedInGenerator: React.FC = () => {
     setCopied(false);
     setCharCount(generatedPost.length);
   };
+
+  useEffect(() => {
+    // Generate default post on component mount
+    generatePost();
+  }, []);
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(post);
