@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 
 // Props for the main Tabs component
 interface TabsProps {
   children: React.ReactNode;
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
+  value?: string; // Controlled tab value
+  defaultValue?: string; // Default tab value
+  onValueChange?: (value: string) => void; // Callback for tab change
 }
 
 // Main Tabs component
@@ -15,11 +15,19 @@ export const Tabs: React.FC<TabsProps> = ({
   value,
   onValueChange,
 }) => {
-  const [currentValue, setCurrentValue] = React.useState(defaultValue || value);
+  const [currentValue, setCurrentValue] = useState(defaultValue || "");
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setCurrentValue(value); // Sync state with controlled value
+    }
+  }, [value]);
 
   const handleChange = (newValue: string) => {
     setCurrentValue(newValue);
-    onValueChange?.(newValue);
+    if (onValueChange) {
+      onValueChange(newValue); // Notify parent of value change
+    }
   };
 
   return (
@@ -38,7 +46,7 @@ export const Tabs: React.FC<TabsProps> = ({
 
 // Props for TabsList
 interface TabsListProps {
-  children: React.ReactNode;
+  children: React.ReactNode; // Children are the tab triggers
   className?: string;
 }
 
@@ -53,10 +61,10 @@ export const TabsList: React.FC<TabsListProps> = ({
 // Props for TabsTrigger
 interface TabsTriggerProps {
   children: React.ReactNode;
-  value: string;
+  value: string; // Identifier for the tab
   className?: string;
-  currentValue?: string;
-  onValueChange?: (value: string) => void;
+  currentValue?: string; // Currently selected tab
+  onValueChange: (value: string) => void; // Callback for tab selection
 }
 
 // TabsTrigger component
@@ -69,11 +77,11 @@ export const TabsTrigger: React.FC<TabsTriggerProps> = ({
 }) => {
   return (
     <button
-      onClick={() => onValueChange?.(value)}
-      className={`px-4 py-2 rounded-md ${
+      onClick={() => onValueChange(value)}
+      className={`px-4 py-2 rounded-md font-medium transition ${
         currentValue === value
           ? "bg-primary text-white"
-          : "bg-lightest text-primary hover:bg-primaryDark hover:text-white"
+          : "bg-gray-200 text-primary hover:bg-primary hover:text-white"
       } ${className}`}
     >
       {children}
@@ -84,8 +92,8 @@ export const TabsTrigger: React.FC<TabsTriggerProps> = ({
 // Props for TabsContent
 interface TabsContentProps {
   children: React.ReactNode;
-  value: string;
-  currentValue?: string;
+  value: string; // Identifier for the content to show
+  currentValue?: string; // Currently selected tab
   className?: string;
 }
 

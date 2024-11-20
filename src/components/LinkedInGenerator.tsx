@@ -7,10 +7,10 @@ import {
   CardDescription,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { Badge } from "./ui/badge";
 import { LinkedinIcon, CopyIcon, Share2Icon, X } from "lucide-react";
-import { categories, postStyles } from "../assets/content"; // Import static content
+import { categories, postStyles } from "../assets/content";
 
 // Helper function to get random element from an array
 const getRandomElement = (array: string[]) =>
@@ -42,7 +42,7 @@ const ShareModal: React.FC<{
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-11/12 max-w-md p-6 rounded-lg shadow-lg">
+      <div className="bg-white w-full max-w-sm p-4 md:p-6 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold text-gray-800">Share Your Post</h2>
           <button
@@ -52,37 +52,37 @@ const ShareModal: React.FC<{
             <X className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-sm text-gray-600 mb-6">
+        <p className="text-sm text-gray-600 mb-4">
           Share this post via your favorite platform:
         </p>
-        <div className="flex flex-col gap-4">
+        <div className="grid gap-3">
           <Button
             onClick={() => shareToWeb("linkedin")}
-            className="bg-blue-600 text-white w-full py-2 rounded-md"
+            className="bg-blue-600 text-white w-full py-2 rounded-md text-sm"
           >
             Share to LinkedIn
           </Button>
           <Button
             onClick={() => shareToWeb("twitter")}
-            className="bg-blue-400 text-white w-full py-2 rounded-md"
+            className="bg-blue-400 text-white w-full py-2 rounded-md text-sm"
           >
             Share to Twitter
           </Button>
           <Button
             onClick={() => shareToWeb("facebook")}
-            className="bg-blue-700 text-white w-full py-2 rounded-md"
+            className="bg-blue-700 text-white w-full py-2 rounded-md text-sm"
           >
             Share to Facebook
           </Button>
           <Button
             onClick={() => shareToWeb("whatsapp")}
-            className="bg-green-500 text-white w-full py-2 rounded-md"
+            className="bg-green-500 text-white w-full py-2 rounded-md text-sm"
           >
             Share to WhatsApp
           </Button>
           <Button
             onClick={() => shareToWeb("email")}
-            className="bg-gray-600 text-white w-full py-2 rounded-md"
+            className="bg-gray-600 text-white w-full py-2 rounded-md text-sm"
           >
             Share via Email
           </Button>
@@ -125,7 +125,7 @@ const LinkedInGenerator: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const sharePost = async () => {
+  const sharePostNative = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
@@ -134,10 +134,10 @@ const LinkedInGenerator: React.FC = () => {
         });
       } catch (error) {
         console.error("Error sharing the post:", error);
-        alert("Native sharing failed. Please use web sharing!");
+        alert("Native sharing failed. Please use the web share option!");
       }
     } else {
-      alert("Native sharing is not supported in your browser.");
+      alert("Native sharing is not supported on this browser.");
     }
   };
 
@@ -156,22 +156,20 @@ const LinkedInGenerator: React.FC = () => {
 
         <CardContent className="p-6 space-y-8">
           <Tabs
-            defaultValue="inspirational"
             value={selectedStyle}
             onValueChange={(value) =>
               setSelectedStyle(value as keyof typeof postStyles)
             }
           >
-            <TabsList className="grid grid-cols-4 gap-4">
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {Object.entries(postStyles).map(([key, style]) => (
                 <TabsTrigger
                   key={key}
                   value={key}
-                  className={`flex items-center justify-center gap-2 rounded-md px-3 py-2 ${
-                    selectedStyle === key
-                      ? "bg-primary text-white"
-                      : "bg-gray-100 text-primary hover:bg-primary hover:text-white"
-                  }`}
+                  currentValue={selectedStyle}
+                  onValueChange={(newValue) =>
+                    setSelectedStyle(newValue as keyof typeof postStyles)
+                  }
                 >
                   {style.icon} {style.name}
                 </TabsTrigger>
@@ -201,7 +199,7 @@ const LinkedInGenerator: React.FC = () => {
                 </Badge>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col md:flex-row gap-3">
                 <Button
                   onClick={copyToClipboard}
                   variant="outline"
@@ -211,7 +209,7 @@ const LinkedInGenerator: React.FC = () => {
                   {copied ? "Copied!" : "Copy"}
                 </Button>
                 <Button
-                  onClick={sharePost}
+                  onClick={sharePostNative}
                   variant="outline"
                   className="flex items-center gap-2 border-primary text-primary px-4 py-2 rounded-md"
                 >
@@ -226,15 +224,6 @@ const LinkedInGenerator: React.FC = () => {
                   <Share2Icon className="w-4 h-4" />
                   Web Share
                 </Button>
-              </div>
-            </div>
-          )}
-
-          {copied && (
-            <div className="mt-4 p-4 bg-green-50 text-green-800 border border-green-300 rounded-md">
-              <div className="font-semibold">Success!</div>
-              <div className="text-sm">
-                Post copied to clipboard! Ready to inspire your network! 🚀
               </div>
             </div>
           )}
