@@ -7,7 +7,7 @@ import {
   CardDescription,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
 import { LinkedinIcon, CopyIcon, Share2Icon, X } from "lucide-react";
 import { categories, postStyles } from "../assets/content";
